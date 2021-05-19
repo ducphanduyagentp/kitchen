@@ -7,6 +7,15 @@
       </div>
     </div>
   </section>
+
+  <section class="section">
+    <div class="container">
+      <b-message> Welcome to the Kitchen, boss! </b-message>
+      <b-message>
+        You have 10 items in the fridge
+      </b-message>
+    </div>
+  </section>
 </div>
 </template>
 

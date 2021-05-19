@@ -1,5 +1,10 @@
 <template>
 <b-navbar>
+     <template #brand>
+        <b-navbar-item tag="router-link" :to="{ path: '/' }">
+            <img src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png">
+        </b-navbar-item>
+    </template>
     <template #start>
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
             Home

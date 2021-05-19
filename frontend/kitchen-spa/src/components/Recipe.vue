@@ -3,13 +3,15 @@
   <section class="hero is-primary">
     <div class="hero-body">
       <div class="container has-text-centered">
-        <h2 class="title">Recipes <b-button icon-right="plus-thick" type="is-success" rounded @click="addRecipe" /></h2>
+        <h2 class="title">Recipes
+          <b-button icon-right="plus-thick" type="is-success" rounded @click="addRecipe" />
+        </h2>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
-      <b-table :data="recipes" :loading="loading">
+      <b-table :data="recipes" :loading="loading" :row-class="(row, index) => cookable(row) && 'is-success'">
             <!-- A virtual column -->
             <b-table-column field="id" label="ID" v-slot="data">
               {{ data.row.id }}
@@ -21,11 +23,17 @@
             </b-table-column>
 
             <b-table-column field="recipe_ingredients" label="Required Ingredients" v-slot="data">
-              {{ data.row.ingredients.join(', ') }}
+              <b-taglist>
+                <b-tag v-for="ingredient in data.row.ingredients" :key="ingredient" v-if="hasItem(ingredient)" size="is-small" type="is-success">{{ ingredient }}</b-tag>
+                <b-tag v-for="ingredient in data.row.ingredients" :key="ingredient" v-if="!hasItem(ingredient)" size="is-small" type="is-danger">{{ ingredient }}</b-tag>
+              </b-taglist>
             </b-table-column>
 
             <b-table-column field="recipe_optional_ingredients" label="Optional Ingredients" v-slot="data">
-              {{ data.row.optional_ingredients.join(', ') }}
+              <b-taglist>
+                <b-tag v-for="ingredient in data.row.optional_ingredients" :key="ingredient" v-if="hasItem(ingredient)" size="is-small" type="is-success">{{ ingredient }}</b-tag>
+                <b-tag v-for="ingredient in data.row.optional_ingredients" :key="ingredient" v-if="!hasItem(ingredient)" size="is-small" type="is-danger">{{ ingredient }}</b-tag>
+              </b-taglist>
             </b-table-column>
 
             <b-table-column field="tags" label="Tags" v-slot="data">
@@ -34,7 +42,7 @@
 
             <b-table-column field="recipe_action" label="Action" v-slot="data">
               <recipe-action
-                v-bind:recipe="data.row" 
+                v-bind:recipe="data.row"
                 v-on:update:isRecipeModalActive="isRecipeModalActive = $event"
                 v-on:update:recipeFormProps="recipeFormProps = $event"
                 v-on:update:hasRecipesChanged="getRecipes()">
@@ -43,9 +51,9 @@
           </b-table>
     </div>
     <b-modal v-model="isRecipeModalActive" :on-cancel="resetRecipeModal">
-      <recipe-modal 
-        v-bind="recipeFormProps" 
-        v-on:update:isRecipeModalActive="isRecipeModalActive = $event" 
+      <recipe-modal
+        v-bind="recipeFormProps"
+        v-on:update:isRecipeModalActive="isRecipeModalActive = $event"
         v-on:update:hasRecipesChanged="getRecipes()">
       </recipe-modal>
     </b-modal>
@@ -54,7 +62,7 @@
 </template>
 
 <script>
-import { fetchRecipes } from '@/api'
+import { fetchRecipes, fetchItems } from '@/api'
 import RecipeAction from '@/components/RecipeAction'
 import RecipeModal from './RecipeModal.vue'
 export default {
@@ -62,6 +70,7 @@ export default {
   data () {
     return {
       recipes: [],
+      items: [],
       isRecipeModalActive: false,
       loading: false,
       recipeFormProps: {
@@ -75,8 +84,12 @@ export default {
       },
     }
   },
+  computed: {
+
+  },
   beforeMount() {
     this.getRecipes();
+    this.getItems();
   },
   components: { RecipeAction, RecipeModal },
   methods: {
@@ -103,6 +116,40 @@ export default {
           this.loading = false;
         });
       }, 500);
+    },
+    getItems: function() {
+      setTimeout( () => {
+        fetchItems().then(response => {
+          this.items = response.data;
+        });
+      }, 500);
+    },
+    hasItem: function(item) {
+      for (var i of this.items) {
+        if (item.toLowerCase() === i.item_name.toLowerCase()) {
+          return true;
+        }
+      }
+      return false;
+    },
+    hasAllItems: function(ingredients) {
+      for (var i of ingredients) {
+        if (!this.hasItem(i)) {
+          return false;
+        }
+      }
+      return true;
+    },
+    hasNoItem: function(ingredients) {
+      for (var i of ingredients) {
+        if (this.hasItem(i)) {
+          return false;
+        }
+      }
+      return true;
+    },
+    cookable: function(row) {
+      return this.hasAllItems(row.ingredients);
     }
   }
 }
@@ -123,5 +170,11 @@ li {
 }
 a {
   color: #42b983;
+}
+</style>
+
+<style>
+tr.is-success {
+  background: #a7ff9b;
 }
 </style>
