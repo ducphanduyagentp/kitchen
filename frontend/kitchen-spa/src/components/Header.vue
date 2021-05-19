@@ -7,8 +7,8 @@
         <b-navbar-item tag="router-link" :to="{ path: '/fridge' }">
             The Fridge
         </b-navbar-item>
-        <b-navbar-item tag="router-link" :to="{ path: '/receipes' }">
-            Receipes
+        <b-navbar-item tag="router-link" :to="{ path: '/recipes' }">
+            Recipes
         </b-navbar-item>
         <b-navbar-item tag="router-link" :to="{ path: '/inventory' }">
             Inventory

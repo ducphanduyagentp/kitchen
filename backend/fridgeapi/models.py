@@ -32,11 +32,11 @@ class Item(db.Model):
         return serialize(self)
 
 
-class Receipe(db.Model):
-    __tablename__ = 'receipes'
+class Recipe(db.Model):
+    __tablename__ = 'recipes'
 
     id = db.Column(db.Integer, primary_key=True)
-    receipe_name = db.Column(db.String(64), index=True, unique=True)
+    recipe_name = db.Column(db.String(64), index=True, unique=True)
     ingredients = db.Column(db.PickleType)
     cooking_time = db.Column(db.Integer)
     optional_ingredients = db.Column(db.PickleType)
@@ -47,7 +47,7 @@ class Receipe(db.Model):
     def serialize(self):
         return {
             'id'            : self.id,
-            'receipe_name'  : self.receipe_name,
+            'recipe_name'  : self.recipe_name,
             'ingredients'   : self.ingredients,
             'cooking_time'  : self.cooking_time,
             'optional_ingredients': self.optional_ingredients,
@@ -55,7 +55,7 @@ class Receipe(db.Model):
         }
 
     def __repr__(self):
-        return '<Receipe {}>'.format(self.receipe_name)
+        return '<Recipe {}>'.format(self.recipe_name)
 
     def to_dict(self):
         return serialize(self)

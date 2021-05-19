@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from .models import db, Item, Receipe
+from .models import db, Item, Recipe
 
 api = Blueprint('api', __name__)
 
@@ -46,49 +46,49 @@ def item(id):
         db.session.commit()
         return jsonify({ 'result': 'success' }), 201
 
-@api.route('/receipes/', methods=('GET', 'POST'))
-def receipes():
+@api.route('/recipes/', methods=('GET', 'POST'))
+def recipes():
     if request.method == 'GET':
-        receipes = Receipe.query.all()
-        return jsonify([receipe.serialize for receipe in receipes])
+        recipes = Recipe.query.all()
+        return jsonify([recipe.serialize for recipe in recipes])
     elif request.method == 'POST':
         post_data = request.get_json()
-        receipe_name = post_data.get('receipe_name')
+        recipe_name = post_data.get('recipe_name')
         ingredients = post_data.get('ingredients', [])
         cooking_time = int(post_data.get('cooking_time', 0))
         optional_ingredients = post_data.get('optional_ingredients', [])
         tags = post_data.get('tags', [])
-        receipe = Receipe(receipe_name=receipe_name, ingredients=ingredients, cooking_time=cooking_time, optional_ingredients=optional_ingredients, tags=tags)
-        db.session.add(receipe)
+        recipe = Recipe(recipe_name=recipe_name, ingredients=ingredients, cooking_time=cooking_time, optional_ingredients=optional_ingredients, tags=tags)
+        db.session.add(recipe)
         db.session.commit()
-        return jsonify(receipe.serialize), 201
+        return jsonify(recipe.serialize), 201
 
 
-@api.route('/receipes/<int:id>/', methods=('GET', 'PUT', 'DELETE'))
-def item(id):
+@api.route('/recipes/<int:id>/', methods=('GET', 'PUT', 'DELETE'))
+def recipe(id):
     if request.method == 'GET':
-        receipe = Receipe.query.get(id)
-        return jsonify({ 'receipe': receipe.serialize })
+        recipe = Recipe.query.get(id)
+        return jsonify({ 'recipe': recipe.serialize })
     elif request.method == 'PUT':
         post_data = request.get_json()
-        receipe_name = post_data.get('receipe_name')
+        recipe_name = post_data.get('recipe_name')
         ingredients = post_data.get('ingredients', [])
         cooking_time = post_data.get('cooking_time', 0)
         optional_ingredients = post_data.get('optional_ingredients', [])
-        receipe_id = int(post_data.get('id'))
+        recipe_id = int(post_data.get('id'))
         tags = post_data.get('tags', [])
 
-        receipe = Receipe.query.filter(Receipe.id == receipe_id).first()
+        recipe = Recipe.query.filter(Recipe.id == recipe_id).first()
 
-        receipe.receipe_name = receipe_name
-        receipe.ingredients = ingredients
-        receipe.cooking_time = cooking_time
-        receipe.optional_ingredients = optional_ingredients
-        receipe.tags = tags
+        recipe.recipe_name = recipe_name
+        recipe.ingredients = ingredients
+        recipe.cooking_time = cooking_time
+        recipe.optional_ingredients = optional_ingredients
+        recipe.tags = tags
 
         db.session.commit()
-        return jsonify(receipe.serialize), 201
+        return jsonify(recipe.serialize), 201
     elif request.method == 'DELETE':
-        Receipe.query.filter(Receipe.id == id).delete()
+        Recipe.query.filter(Recipe.id == id).delete()
         db.session.commit()
         return jsonify({ 'result': 'success' }), 201

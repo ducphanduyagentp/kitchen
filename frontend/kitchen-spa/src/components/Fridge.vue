@@ -18,9 +18,9 @@
             <!-- A custom formatted column -->
             <b-table-column field="item_name" label="Item Name" v-slot="data">
               {{ data.row.item_name }}
-              <!-- <div v-if="data.row.ingredient_type && data.row.ingredient_type.length > 0">
-                <b-badge variant="success"> {{ data.row.ingredient_type }} </b-badge>
-              </div> -->
+              <div v-if="data.row.item_type && data.row.item_type.length > 0">
+                <b-tag type="is-success"> {{ data.row.item_type }} </b-tag>
+              </div>
             </b-table-column>
 
             <!-- A virtual composite column -->

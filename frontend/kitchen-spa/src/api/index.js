@@ -21,3 +21,23 @@ export function addItem(item) {
 export function removeItem(itemId) {
   return axios.delete(`${API_URL}/items/${itemId}/`)
 }
+
+export function fetchRecipes() {
+  return axios.get(`${API_URL}/recipes/`)
+}
+
+export function fetchRecipe(recipeId) {
+  return axios.get(`${API_URL}/recipes/${recipeId}/`)
+}
+
+export function updateRecipe(recipe) {
+  return axios.put(`${API_URL}/recipes/${recipe.id}/`, recipe)
+}
+
+export function addRecipe(recipe) {
+  return axios.post(`${API_URL}/recipes/`, recipe)
+}
+
+export function removeRecipe(recipeId) {
+  return axios.delete(`${API_URL}/recipes/${recipeId}/`)
+}
