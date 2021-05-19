@@ -40,6 +40,7 @@ class Receipe(db.Model):
     ingredients = db.Column(db.PickleType)
     cooking_time = db.Column(db.Integer)
     optional_ingredients = db.Column(db.PickleType)
+    tags = db.Column(db.PickleType)
 
     # TODO: Use more general methods
     @property
@@ -49,7 +50,8 @@ class Receipe(db.Model):
             'receipe_name'  : self.receipe_name,
             'ingredients'   : self.ingredients,
             'cooking_time'  : self.cooking_time,
-            'optional_ingredients': self.optional_ingredients
+            'optional_ingredients': self.optional_ingredients,
+            'tags'          : self.tags
         }
 
     def __repr__(self):

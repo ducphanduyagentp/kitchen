@@ -45,3 +45,50 @@ def item(id):
         Item.query.filter(Item.id == id).delete()
         db.session.commit()
         return jsonify({ 'result': 'success' }), 201
+
+@api.route('/receipes/', methods=('GET', 'POST'))
+def receipes():
+    if request.method == 'GET':
+        receipes = Receipe.query.all()
+        return jsonify([receipe.serialize for receipe in receipes])
+    elif request.method == 'POST':
+        post_data = request.get_json()
+        receipe_name = post_data.get('receipe_name')
+        ingredients = post_data.get('ingredients', [])
+        cooking_time = int(post_data.get('cooking_time', 0))
+        optional_ingredients = post_data.get('optional_ingredients', [])
+        tags = post_data.get('tags', [])
+        receipe = Receipe(receipe_name=receipe_name, ingredients=ingredients, cooking_time=cooking_time, optional_ingredients=optional_ingredients, tags=tags)
+        db.session.add(receipe)
+        db.session.commit()
+        return jsonify(receipe.serialize), 201
+
+
+@api.route('/receipes/<int:id>/', methods=('GET', 'PUT', 'DELETE'))
+def item(id):
+    if request.method == 'GET':
+        receipe = Receipe.query.get(id)
+        return jsonify({ 'receipe': receipe.serialize })
+    elif request.method == 'PUT':
+        post_data = request.get_json()
+        receipe_name = post_data.get('receipe_name')
+        ingredients = post_data.get('ingredients', [])
+        cooking_time = post_data.get('cooking_time', 0)
+        optional_ingredients = post_data.get('optional_ingredients', [])
+        receipe_id = int(post_data.get('id'))
+        tags = post_data.get('tags', [])
+
+        receipe = Receipe.query.filter(Receipe.id == receipe_id).first()
+
+        receipe.receipe_name = receipe_name
+        receipe.ingredients = ingredients
+        receipe.cooking_time = cooking_time
+        receipe.optional_ingredients = optional_ingredients
+        receipe.tags = tags
+
+        db.session.commit()
+        return jsonify(receipe.serialize), 201
+    elif request.method == 'DELETE':
+        Receipe.query.filter(Receipe.id == id).delete()
+        db.session.commit()
+        return jsonify({ 'result': 'success' }), 201
