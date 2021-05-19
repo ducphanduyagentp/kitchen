@@ -11,3 +11,5 @@ The Kitchen is gonna solve that. Decentralized blockchain food management. I cal
 You can also use it to keep track of lunch boxes that you might have left to starved at the office.
 
 Yeah. Don't do that.
+
+![img1](img/pic1.png)

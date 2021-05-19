@@ -36,6 +36,10 @@
               </b-taglist>
             </b-table-column>
 
+            <b-table-column field="cooking_time" label="Cooking Time" v-slot="data">
+              {{ data.row.cooking_time }} minutes
+            </b-table-column>
+
             <b-table-column field="tags" label="Tags" v-slot="data">
               {{ data.row.tags.join(', ') }}
             </b-table-column>
