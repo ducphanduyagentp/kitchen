@@ -1,6 +1,7 @@
 <template>
     <div class="buttons">
     <b-button @click="editRecipe(recipe)" icon-left="lead-pencil" type="is-info">Edit</b-button>
+    <b-button icon-left="plus-thick" type="is-success">Cook and add to Fridge</b-button>
     <b-button @click="removeRecipe(recipe)" icon-left="delete" type="is-danger">Remove</b-button>
     </div>
 </template>

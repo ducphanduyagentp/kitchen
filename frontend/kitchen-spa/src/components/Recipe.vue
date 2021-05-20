@@ -5,12 +5,17 @@
       <div class="container has-text-centered">
         <h2 class="title">Recipes
           <b-button icon-right="plus-thick" type="is-success" rounded @click="addRecipe" />
+          <b-button icon-right="bowl-mix" type="is-info" rounded @click="pickRecipe" />
         </h2>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
+      <b-message v-bind="chosenRecipe" title="Pick a recipe" v-model="isMessageActive" aria-close-label="Close message">
+      <div v-if="chosenRecipe"> You can make {{ chosenRecipe.recipe_name }} today! </div>
+      <div v-else> There is nothing you can make today </div>
+      </b-message>
       <b-table :data="recipes" :loading="loading" :row-class="(row, index) => cookable(row) && 'is-success'">
             <!-- A virtual column -->
             <b-table-column field="id" label="ID" v-slot="data">
@@ -23,7 +28,7 @@
             </b-table-column>
 
             <b-table-column field="recipe_ingredients" label="Required Ingredients" v-slot="data">
-              <b-taglist>
+              <b-taglist >
                 <b-tag v-for="ingredient in data.row.ingredients" :key="ingredient" v-if="hasItem(ingredient)" size="is-small" type="is-success">{{ ingredient }}</b-tag>
                 <b-tag v-for="ingredient in data.row.ingredients" :key="ingredient" v-if="!hasItem(ingredient)" size="is-small" type="is-danger">{{ ingredient }}</b-tag>
               </b-taglist>
@@ -69,6 +74,7 @@
 import { fetchRecipes, fetchItems } from '@/api'
 import RecipeAction from '@/components/RecipeAction'
 import RecipeModal from './RecipeModal.vue'
+import { randomElement } from '@/utils'
 export default {
   name: 'Recipe',
   data () {
@@ -77,6 +83,7 @@ export default {
       items: [],
       isRecipeModalActive: false,
       loading: false,
+      isMessageActive: false,
       recipeFormProps: {
         recipe_id: -1,
         recipe_name: '',
@@ -86,6 +93,7 @@ export default {
         tags: [],
         updating: false
       },
+      chosenRecipe: undefined
     }
   },
   computed: {
@@ -120,6 +128,16 @@ export default {
           this.loading = false;
         });
       }, 500);
+    },
+    pickRecipe: function() {
+      var cookable_recipe = [];
+      for (var r of this.recipes) {
+        if (this.cookable(r)) {
+          cookable_recipe.push(r);
+        }
+      }
+      this.isMessageActive = true;
+      this.chosenRecipe = randomElement(cookable_recipe);
     },
     getItems: function() {
       setTimeout( () => {
