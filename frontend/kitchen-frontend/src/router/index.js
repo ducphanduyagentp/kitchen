@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 import Home from '@/components/Home'
 import Fridge from '@/components/Fridge'
 import Recipe from '@/components/Recipe'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+const router = new VueRouter({
   routes: [
     {
       path: '/',
@@ -25,3 +25,5 @@ export default new Router({
     }
   ]
 })
+
+export default router
