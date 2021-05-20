@@ -197,6 +197,6 @@ a {
 
 <style>
 tr.is-success {
-  background: #a7ff9b;
+  background: #3ba52d;
 }
 </style>
