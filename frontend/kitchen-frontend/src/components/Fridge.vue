@@ -50,16 +50,18 @@
 </template>
 
 <script>
-import { fetchItems } from '@/api'
+import { mapState } from 'vuex'
 import ItemAction from '@/components/ItemAction'
 import ItemModal from './ItemModal.vue'
 export default {
   name: 'Fridge',
+  computed: mapState({
+    items: state => state.items,
+    loading: state => state.loading
+  }),
   data () {
     return {
-      items: [],
       isItemModalActive: false,
-      loading: false,
       itemFormProps: {
         item_id: -1,
         item_name: "",
@@ -90,13 +92,7 @@ export default {
       }
     },
     getItems: function() {
-      this.loading = true;
-      setTimeout( () => {
-        fetchItems().then(response => {
-          this.items = response.data;
-          this.loading = false;
-        });
-      }, 500);
+      this.$store.dispatch('loadItems');
     }
   }
 }

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "mv dist/.git dist/CNAME tmp && vue-cli-service build && mv tmp/.git tmp/CNAME dist",
     "prod": "vue-cli-service serve --mode production"
   },
   "dependencies": {

@@ -86,7 +86,7 @@ export default {
                 quantity: this.l_quantity,
                 unit: this.l_unit,
             }
-            apiAddItem(item);
+            this.$store.dispatch('addItem', { item: item });
             this.$emit('update:hasItemsChanged', true);
             this.closeModal();
         },

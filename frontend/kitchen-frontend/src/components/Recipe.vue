@@ -72,6 +72,7 @@
 
 <script>
 import { fetchRecipes, fetchItems } from '@/api'
+import { mapState } from 'vuex'
 import RecipeAction from '@/components/RecipeAction'
 import RecipeModal from './RecipeModal.vue'
 import { randomElement } from '@/utils'
@@ -79,10 +80,7 @@ export default {
   name: 'Recipe',
   data () {
     return {
-      recipes: [],
-      items: [],
       isRecipeModalActive: false,
-      loading: false,
       isMessageActive: false,
       recipeFormProps: {
         recipe_id: -1,
@@ -96,12 +94,14 @@ export default {
       chosenRecipe: undefined
     }
   },
-  computed: {
-
-  },
+  computed: mapState({
+    recipes: state => state.recipes,
+    loading: state => state.loading,
+    items: state => state.items
+  }),
   beforeMount() {
-    this.getRecipes();
     this.getItems();
+    this.getRecipes();
   },
   components: { RecipeAction, RecipeModal },
   methods: {
@@ -121,13 +121,7 @@ export default {
       }
     },
     getRecipes: function() {
-      this.loading = true;
-      setTimeout( () => {
-        fetchRecipes().then(response => {
-          this.recipes = response.data;
-          this.loading = false;
-        });
-      }, 500);
+      this.$store.dispatch('loadRecipes');
     },
     pickRecipe: function() {
       var cookable_recipe = [];
@@ -140,11 +134,7 @@ export default {
       this.chosenRecipe = randomElement(cookable_recipe);
     },
     getItems: function() {
-      setTimeout( () => {
-        fetchItems().then(response => {
-          this.items = response.data;
-        });
-      }, 500);
+      this.$store.dispatch('loadItems');
     },
     hasItem: function(item) {
       for (var i of this.items) {

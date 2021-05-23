@@ -18,11 +18,21 @@
         <b-navbar-item tag="router-link" :to="{ path: '/inventory' }">
             Inventory
         </b-navbar-item>
+        <b-navbar-item tag="router-link" v-if="!isAuthenticated" :to="{ path: '/login' }">
+            Login / Register
+        </b-navbar-item>
     </template>
 </b-navbar>
 </template>
 
 <script>
+export default {
+  computed: {
+    isAuthenticated () {
+      return this.$store.getters.isAuthenticated
+    }
+  }
+}
 </script>
 
 <style>

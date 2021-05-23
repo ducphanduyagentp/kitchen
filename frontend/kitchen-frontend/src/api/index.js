@@ -2,42 +2,50 @@ import axios from 'axios'
 
 const API_URL = process.env.VUE_APP_API_URL + '/api'
 
-export function fetchItems() {
-  return axios.get(`${API_URL}/items/`)
+export function fetchItems(jwt) {
+  return axios.get(`${API_URL}/items/`, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
-export function fetchItem(itemId) {
-  return axios.get(`${API_URL}/items/${itemId}/`)
+export function fetchItem(itemId, jwt) {
+  return axios.get(`${API_URL}/items/${itemId}/`, { headers: { Authorization: `Bearer: ${jwt}` } })
 }
 
-export function updateItem(item) {
-  return axios.put(`${API_URL}/items/${item.id}/`, item)
+export function updateItem(item, jwt) {
+  return axios.put(`${API_URL}/items/${item.id}/`, item, { headers: { Authorization: `Bearer: ${jwt}` } })
 }
 
-export function addItem(item) {
-  return axios.post(`${API_URL}/items/`, item)
+export function addItem(item, jwt) {
+  return axios.post(`${API_URL}/items/`, item, { headers: { Authorization: `Bearer: ${jwt}` } })
 }
 
-export function removeItem(itemId) {
-  return axios.delete(`${API_URL}/items/${itemId}/`)
+export function removeItem(itemId, jwt) {
+  return axios.delete(`${API_URL}/items/${itemId}/`, { headers: { Authorization: `Bearer: ${jwt}` } })
 }
 
-export function fetchRecipes() {
-  return axios.get(`${API_URL}/recipes/`)
+export function fetchRecipes(jwt) {
+  return axios.get(`${API_URL}/recipes/`, { headers: { Authorization: `Bearer: ${jwt}` } })
 }
 
-export function fetchRecipe(recipeId) {
-  return axios.get(`${API_URL}/recipes/${recipeId}/`)
+export function fetchRecipe(recipeId, jwt) {
+  return axios.get(`${API_URL}/recipes/${recipeId}/`, { headers: { Authorization: `Bearer: ${jwt}` } })
 }
 
-export function updateRecipe(recipe) {
-  return axios.put(`${API_URL}/recipes/${recipe.id}/`, recipe)
+export function updateRecipe(recipe, jwt) {
+  return axios.put(`${API_URL}/recipes/${recipe.id}/`, recipe, { headers: { Authorization: `Bearer: ${jwt}` } })
 }
 
-export function addRecipe(recipe) {
-  return axios.post(`${API_URL}/recipes/`, recipe)
+export function addRecipe(recipe, jwt) {
+  return axios.post(`${API_URL}/recipes/`, recipe, { headers: { Authorization: `Bearer: ${jwt}` } })
 }
 
-export function removeRecipe(recipeId) {
-  return axios.delete(`${API_URL}/recipes/${recipeId}/`)
+export function removeRecipe(recipeId, jwt) {
+  return axios.delete(`${API_URL}/recipes/${recipeId}/`, { headers: { Authorization: `Bearer: ${jwt}` } })
+}
+
+export function authenticate(userData) {
+  return axios.post(`${API_URL}/login/`, userData)
+}
+
+export function register(userData) {
+  return axios.post(`${API_URL}/register/`, userData)
 }

@@ -98,7 +98,7 @@ export default {
                 cooking_time: this.l_cooking_time,
                 tags: trimListSpace(this.l_tags),
             }
-            apiAddRecipe(recipe);
+            this.$store.dispatch('addRecipe', { recipe: recipe });
             this.$emit('update:hasRecipesChanged', true);
             this.closeModal();
         },

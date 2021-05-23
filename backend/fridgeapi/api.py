@@ -26,11 +26,11 @@ def token_required(f):
 
         try:
             token = auth_headers[1]
-            data = jwt.decode(token, current_app.config['SECRET_KEY'])
+            data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms='HS256')
             user = User.query.filter_by(username=data['sub']).first()
             if not user:
                 raise RuntimeError('User not found')
-            return f(user, *args, **kwargs)
+            return f(*args, **kwargs)
         except jwt.ExpiredSignatureError:
             return jsonify(expired_msg), 401 # 401 is Unauthorized HTTP status code
         except (jwt.InvalidTokenError, Exception) as e:
@@ -41,6 +41,7 @@ def token_required(f):
 
 
 @api.route('/items/', methods=('GET', 'POST'))
+@token_required
 def items():
     if request.method == 'GET':
         items = Item.query.all()
@@ -58,7 +59,7 @@ def items():
 
 
 @api.route('/items/<int:id>/', methods=('GET', 'PUT', 'DELETE'))
-# @token_required
+@token_required
 def item(id):
     if request.method == 'GET':
         item = Item.query.get(id)
@@ -85,6 +86,7 @@ def item(id):
         return jsonify({ 'result': 'success' }), 201
 
 @api.route('/recipes/', methods=('GET', 'POST'))
+@token_required
 def recipes():
     if request.method == 'GET':
         recipes = Recipe.query.all()
@@ -103,6 +105,7 @@ def recipes():
 
 
 @api.route('/recipes/<int:id>/', methods=('GET', 'PUT', 'DELETE'))
+@token_required
 def recipe(id):
     if request.method == 'GET':
         recipe = Recipe.query.get(id)
@@ -156,7 +159,8 @@ def login():
         'iat': datetime.utcnow(),
         'exp': datetime.utcnow() + timedelta(minutes=30)
         },
-        current_app.config['SECRET_KEY']
+        current_app.config['SECRET_KEY'],
+        algorithm='HS256'
     )
 
     return jsonify({ 'token': token })
