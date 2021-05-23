@@ -9,4 +9,9 @@ class BaseConfig(object):
     secret_key_env = os.environ.get('KITCHEN_SECRET_KEY')
     if secret_key_env:
         SECRET_KEY = secret_key_env
+
+    RESERVED_USERNAME = 'admin'
+    reserved_username_env = os.environ.get('RESERVED_USERNAME')
+    if reserved_username_env:
+        RESERVED_USERNAME = reserved_username_env
     
