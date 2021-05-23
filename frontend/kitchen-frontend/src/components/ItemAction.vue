@@ -26,11 +26,11 @@ export default {
         },
         adjustItem: function(item, by) {
             item.quantity += by;
-            apiUpdateItem(item);
+            this.$store.dispatch('updateItem', { item: item });
             this.$emit('update:hasItemsChanged', true);
         },
         removeItem: function(item) {
-            apiRemoveItem(item.id);
+            this.$store.dispatch('removeItem', { id: item.id });
             this.$emit('update:hasItemsChanged', true);
         }
     },

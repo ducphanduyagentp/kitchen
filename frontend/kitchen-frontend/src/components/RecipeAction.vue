@@ -25,7 +25,7 @@ export default {
             this.$emit('update:recipeFormProps', updateFormProps);
         },
         removeRecipe: function(recipe) {
-            apiRemoveRecipe(recipe.id);
+            this.$store.dispatch('removeRecipe', { recipe: recipe });
             this.$emit('update:hasRecipesChanged', true);
         }
     },

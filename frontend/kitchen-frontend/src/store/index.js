@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { fetchItems, fetchItem, addItem, fetchRecipes, fetchRecipe, addRecipe, authenticate, register } from '@/api'
+import { fetchItems, fetchItem, addItem, updateItem, removeItem } from '@/api'
+import { fetchRecipes, fetchRecipe, addRecipe, updateRecipe, removeRecipe } from '@/api'
+import { authenticate, register } from '@/api'
 import { isValidJwt, EventBus } from '@/utils'
 
 Vue.use(Vuex)
@@ -78,6 +80,12 @@ const actions = {
   addItem(context, { item }) {
     return addItem(item, context.state.jwt.token);
   },
+  updateItem(context, { item }) {
+    return updateItem(item, context.state.jwt.token);
+  },
+  removeItem(context, { id }) {
+    return removeItem(id, context.state.jwt.token);
+  },
   loadRecipes(context) {
     context.commit('setLoading', { loading: true });
 
@@ -92,8 +100,13 @@ const actions = {
   },
   addRecipe(context, { recipe }) {
     return addRecipe(recipe, context.state.jwt.token);
+  },
+  updateRecipe(context, { recipe }) {
+    return updateRecipe(recipe, context.state.jwt.token);
+  },
+  removeRecipe(context, { id }) {
+    return removeRecipe(id, context.state.jwt.token);
   }
-
 }
 
 const modules = {
