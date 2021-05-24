@@ -13,7 +13,7 @@
         <div class="field">
           <label class="label is-large" for="username">Username:</label>
           <div class="control">
-            <input type="username" class="input is-large" id="username" v-model="username">
+            <input type="email" class="input is-large" id="username" v-model="username">
           </div>
         </div>
         <div class="field">
