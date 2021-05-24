@@ -19,5 +19,8 @@ new Vue({
   render: h => h(App),
   beforeCreate() {
     this.$store.dispatch('initializeStore');
+  },
+  created() {
+    document.title = 'The Kitchen';
   }
 }).$mount('#app')
