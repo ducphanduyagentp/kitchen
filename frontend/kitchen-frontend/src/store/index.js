@@ -18,6 +18,15 @@ const state = {
 }
 
 const mutations = {
+  initializeStore(state) {
+    if (localStorage.getItem('token')) {
+      state.jwt = {'token': localStorage.getItem('token')};
+    }
+  },
+  clearStore(state) {
+    localStorage.clear();
+    state.jwt = '';
+  },
   setUserData (state, payload) {
     console.log('setUserData payload = ', payload)
     state.userData = payload.userData
@@ -47,6 +56,12 @@ const mutations = {
 }
 
 const actions = {
+  initializeStore(context) {
+    context.commit('initializeStore');
+  },
+  clearStore(context) {
+    context.commit('clearStore');
+  },
   login(context, userData) {
     context.commit('setUserData', { userData })
     return authenticate(userData)

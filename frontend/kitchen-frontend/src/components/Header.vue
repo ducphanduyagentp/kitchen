@@ -2,7 +2,7 @@
 <b-navbar>
      <template #brand>
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-            <img src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png">
+            <img src="logo.png">
         </b-navbar-item>
     </template>
     <template #start>
@@ -20,6 +20,9 @@
         </b-navbar-item>
         <b-navbar-item tag="router-link" v-if="!isAuthenticated" :to="{ path: '/login' }">
             Login / Register
+        </b-navbar-item>
+        <b-navbar-item tag="router-link" v-else :to="{ path: '/logout' }">
+            Logout
         </b-navbar-item>
     </template>
 </b-navbar>
