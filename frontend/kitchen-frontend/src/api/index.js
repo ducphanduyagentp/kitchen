@@ -49,3 +49,7 @@ export function authenticate(userData) {
 export function register(userData) {
   return axios.post(`${API_URL}/register/`, userData)
 }
+
+export function ping() {
+  return axios.get(`${API_URL}/ping`)
+}

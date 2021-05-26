@@ -171,3 +171,8 @@ def reset():
     User.query.filter(User.username == 'admin').delete()
     db.session.commit()
     return jsonify({ 'message': 'haiyaa' })
+
+
+@api.route('/ping')
+def ping():
+    return jsonify({ 'message': 'pong' })

@@ -14,12 +14,21 @@
       <b-message>
         You have 10 items in the fridge
       </b-message>
+      <b-button type="is-success" @click="ping">Ping</b-button>
     </div>
   </section>
 </div>
 </template>
 
 <script>
+import { ping as apiPing } from '@/api'
+export default {
+  methods: {
+    ping: function () {
+      return apiPing();
+    }
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
